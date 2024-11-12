@@ -67,6 +67,22 @@ const App = () => {
   const currentChat = previousChats.filter(previousChat => previousChats.title === currentTitle)
   const uniqueTitles = Array.from(new Set(previousChats.map(previousChat => previousChat.title)))
 
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const fileType = file.type;
+      if (fileType === 'application/pdf') {
+        await parsePDF(file);
+      } else {
+        alert('Unsupported file type. Please upload a PDF file.');
+      }
+    }
+  };
+
+  const parsePDF = async (file) => {
+
+  };
+
   return (
     <div className="app">
       <section className="sidebar">
@@ -87,7 +103,8 @@ const App = () => {
         <div className="bottom-section">
           <div className="input-container">
             <input value={value} onChange={(e) => setValue(e.target.value)}/>
-            <div id="attach">
+            <div id="attach" onClick={() => document.getElementsByClassName('fileInput')[0].click()}>
+              <input className='fileInput' type='file' onChange={handleFileUpload} accept=".pdf"/>
               <AttachFileRoundedIcon/>
             </div>
             <div id="submit" onClick={getMessage}>
